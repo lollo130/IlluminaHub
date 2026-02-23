@@ -2,11 +2,7 @@
   command = "pnpm run build"
   publish = "build/client"
 
-[functions]
-  node_bundler = "esbuild"
-  # Lasciamo che Netlify usi la sua cartella interna predefinita
-
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/remix-server" # Nome standard dell'adattatore
+  to = "/.netlify/functions/remix-server"
   status = 200

@@ -16,16 +16,26 @@ function useBoltHistoryDB() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
+ useEffect(() => {
     const initDB = async () => {
       try {
         setIsLoading(true);
 
-        const database = await openDatabase();
+        // 1. Definiamo come prendere il database in modo sicuro
+        async function getDatabase() {
+          if (typeof window === 'undefined') return undefined;
+          return await openDatabase();
+        }
+
+        // 2. CHIAMIAMO la funzione (Questa riga risolve l'errore!)
+        const database = await getDatabase();
+
+        // 3. Ora "database" esiste e possiamo passarlo allo stato
         setDb(database || null);
-        setIsLoading(false);
+
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error initializing database'));
+        console.error(err);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -38,10 +48,8 @@ function useBoltHistoryDB() {
       }
     };
   }, []);
-
-  return { db, isLoading, error };
+return { db, isLoading, error };
 }
-
 // Extend the Chat interface to include the missing properties
 interface ExtendedChat extends Chat {
   title?: string;
@@ -79,6 +87,9 @@ export function DataTab() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiKeyFileInputRef = useRef<HTMLInputElement>(null);
   const chatFileInputRef = useRef<HTMLInputElement>(null);
+  if (dbLoading){
+    return (  . . .  );
+  }
 
   // State for confirmation dialogs
   const [showResetInlineConfirm, setShowResetInlineConfirm] = useState(false);

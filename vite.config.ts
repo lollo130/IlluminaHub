@@ -94,6 +94,14 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
+      rollupOptions: {
+        output: {
+          // Forza il nome del file server
+          entryFileNames: (chunkInfo) => {
+            return chunkInfo.name === 'server' ? 'server.js' : '[name]-[hash].js';
+          },
+        },
+      },
     },
     plugins: [
       netlifyPlugin(),
@@ -121,8 +129,8 @@ export default defineConfig((config) => {
         },
       },
       //config.mode !== 'test' && remixCloudflareDevProxy(),
-      remixVitePlugin({
-       buildEndFile: 'server.js',
+     remixVitePlugin({
+        serverBuildFile: 'server.js', 
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,

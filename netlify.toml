@@ -4,9 +4,10 @@
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/remix-server"
+  to = "/.netlify/functions/server"
   status = 200
 
 [functions]
   node_bundler = "esbuild"
   directory = ".netlify/functions-internal"
+  included_files = ["build/server/**"]

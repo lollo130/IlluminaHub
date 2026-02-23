@@ -34,7 +34,10 @@ export interface ChatHistoryItem {
 
 const persistenceEnabled = !import.meta.env.VITE_DISABLE_PERSISTENCE;
 
-export const db = persistenceEnabled ? await openDatabase() : undefined;
+// Sostituisci la riga dell'export const db con questa:
+export const db = typeof window !== 'undefined' && persistenceEnabled 
+  ? openDatabase() 
+  : undefined;
 
 export const chatId = atom<string | undefined>(undefined);
 export const description = atom<string | undefined>(undefined);

@@ -9,3 +9,12 @@
   from = "/*"
   to = "/.netlify/functions/index"
   status = 200
+
+
+
+  [functions]
+  node_bundler = "esbuild"
+  directory = "build/server"
+
+[functions.main]
+  node_version = "20"

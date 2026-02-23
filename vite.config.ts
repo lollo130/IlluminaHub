@@ -130,7 +130,7 @@ export default defineConfig((config) => {
       },
       //config.mode !== 'test' && remixCloudflareDevProxy(),
      remixVitePlugin({
-        serverBuildFile: 'server.js', 
+        // Rimuovi le righe serverBuildFile e buildEndFile
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,

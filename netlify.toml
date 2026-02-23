@@ -4,11 +4,10 @@
 
 [functions]
   node_bundler = "esbuild"
-  directory = "build/server"
+  directory = "build/server" # Rimosso l'asterisco finale che confonde il sistema
 
-[functions.main]
+[functions.index] # Cambiato da .main a .index per combaciare con la riga 16
   node_version = "20"
-  # Questa riga dice a Netlify di usare il formato moderno
   node_options = "--input-type=module"
 
 [[redirects]]

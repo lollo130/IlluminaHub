@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Button } from '~/components/ui/Button';
 import { ConfirmationDialog, SelectionDialog } from '~/components/ui/Dialog';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '~/components/ui/Card';
@@ -87,8 +87,16 @@ export function DataTab() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiKeyFileInputRef = useRef<HTMLInputElement>(null);
   const chatFileInputRef = useRef<HTMLInputElement>(null);
-  if (dbLoading){
-    return (  . . .  );
+// Verifica che dbLoading sia usato correttamente
+  if (dbLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-20 space-y-4">
+        <div className="i-ph-spinner-gap-bold animate-spin w-10 h-10 text-accent-500" />
+        <p className="text-bolt-elements-textSecondary animate-pulse text-lg">
+          Inizializzazione IlluminaHub...
+        </p>
+      </div>
+    );
   }
 
   // State for confirmation dialogs

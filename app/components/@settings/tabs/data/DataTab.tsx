@@ -24,14 +24,21 @@ function useBoltHistoryDB() {
         // 1. Definiamo come prendere il database in modo sicuro
         async function getDatabase() {
           if (typeof window === 'undefined') return undefined;
-          return await openDatabase();
+          return openDatabase();
         }
 
         // 2. CHIAMIAMO la funzione (Questa riga risolve l'errore!)
-        const database = await getDatabase();
+       // Chiamata sicura senza await diretto se possibile
+        getDatabase().then(database => {
+          setDb(database || null);
+        }).catch(err => {
+          console.error("Errore DB:", err);
+        }).finally(() => {
+          setIsLoading(false);
+        });
 
         // 3. Ora "database" esiste e possiamo passarlo allo stato
-        setDb(database || null);
+    
 
       } catch (err) {
         console.error(err);

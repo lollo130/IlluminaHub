@@ -1,3 +1,4 @@
+import { netlifyPlugin } from '@netlify/remix-adapter/plugin';
 import { cloudflareDevProxyVitePlugin as remixCloudflareDevProxy, vitePlugin as remixVitePlugin } from '@remix-run/dev';
 import UnoCSS from 'unocss/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
@@ -95,6 +96,7 @@ export default defineConfig((config) => {
       target: 'esnext',
     },
     plugins: [
+      netlifyPlugin(),
       nodePolyfills({
         include: ['buffer', 'process', 'util', 'stream'],
         globals: {
@@ -118,7 +120,7 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      config.mode !== 'test' && remixCloudflareDevProxy(),
+      //config.mode !== 'test' && remixCloudflareDevProxy(),
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,

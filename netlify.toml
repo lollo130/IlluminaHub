@@ -2,16 +2,7 @@
   command = "pnpm run build"
   publish = "build/client"
 
-[functions]
-  node_bundler = "esbuild"
-  # Puntiamo alla cartella dove Remix mette il server
-  directory = "build/server"
-
-[functions.index]
-  node_version = "20"
-  node_options = "--input-type=module"
-
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/index"
+  to = "/.netlify/functions/remix-server"
   status = 200

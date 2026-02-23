@@ -4,14 +4,9 @@
 
 [functions]
   node_bundler = "esbuild"
-  # Puntiamo direttamente al server generato da Remix
-  directory = "build/server"
-
-[functions.index]
-  node_version = "20"
-  node_options = "--input-type=module"
+  # Lasciamo che Netlify usi la sua cartella interna predefinita
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/index"
+  to = "/.netlify/functions/remix-server" # Nome standard dell'adattatore
   status = 200

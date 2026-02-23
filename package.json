@@ -12,7 +12,7 @@
   },
   "scripts": {
     "deploy": "npm run build && wrangler pages deploy",
-    "build": "remix vite:build && node scripts/rename-server.cjs",
+    "build": "remix vite:build && node -e \"const fs=require('fs');const p='./build/server/index.js';const n='./build/server/server.js';if(fs.existsSync(p)){fs.renameSync(p,n);console.log('✅ Server renamed');}else{console.log('⚠️ index.js not found');}\"",
     "dev": "node pre-start.cjs  && remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",

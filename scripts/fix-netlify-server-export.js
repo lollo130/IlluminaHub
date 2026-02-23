@@ -3,34 +3,44 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const buildDir = path.resolve(__dirname, '../build/server');
 const indexPath = path.join(buildDir, 'index.js');
 const serverPath = path.join(buildDir, 'server.js');
-const serverCjsPath = path.join(buildDir, 'server.cjs');
 
 try {
+  // 1. Rinomina se necessario
   if (fs.existsSync(indexPath) && !fs.existsSync(serverPath)) {
     fs.renameSync(indexPath, serverPath);
     console.log('✅ Ridenominato index.js -> server.js');
   }
 
   if (!fs.existsSync(serverPath)) {
-    console.log('⚠️ Nessun file server.js trovato');
-    process.exit(0);
+    console.error('❌ server.js non trovato!');
+    process.exit(1);
   }
 
-  const src = fs.readFileSync(serverPath, 'utf8');
+  let content = fs.readFileSync(serverPath, 'utf8');
 
-  if (!/export\s+default/.test(src) && /(module\.exports|exports\.)/.test(src)) {
-    fs.renameSync(serverPath, serverCjsPath);
-    const wrapper = `import handler from './server.cjs';\nexport default handler;\n`;
-    fs.writeFileSync(serverPath, wrapper, 'utf8');
-    console.log('🚀 Creato wrapper ESM server.js per Netlify');
+  // 2. Applica la "Toppa di Compatibilità" (Shim)
+  // Questa riga assicura che ci sia un export default valido per Netlify
+  const shim = `
+// --- Netlify Compatibility Shim ---
+if (typeof module !== "undefined" && module.exports) {
+  module.exports.default = module.exports.default || module.exports;
+}
+export default (typeof module !== "undefined" && module.exports && module.exports.default) 
+  ? module.exports.default 
+  : null;
+`;
+
+  if (!content.includes('Netlify Compatibility Shim')) {
+    fs.appendFileSync(serverPath, shim, 'utf8');
+    console.log('🚀 Applicata toppa di compatibilità default export per Netlify');
   } else {
-    console.log('✅ server.js è già compatibile');
+    console.log('✅ La toppa è già presente.');
   }
+
 } catch (err) {
-  console.error('❌ Errore:', err);
+  console.error('❌ Errore durante il fix:', err);
   process.exit(1);
 }

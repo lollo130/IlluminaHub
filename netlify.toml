@@ -4,9 +4,10 @@
 
 [functions]
   node_bundler = "esbuild"
-  directory = "build/server" # Rimosso l'asterisco finale che confonde il sistema
+  # Puntiamo direttamente al server generato da Remix
+  directory = "build/server"
 
-[functions.index] # Cambiato da .main a .index per combaciare con la riga 16
+[functions.index]
   node_version = "20"
   node_options = "--input-type=module"
 
